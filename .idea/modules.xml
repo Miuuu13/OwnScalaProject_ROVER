@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/OwnScalaProject_ROVER.iml" filepath="$PROJECT_DIR$/.idea/OwnScalaProject_ROVER.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Rover.iml" filepath="$PROJECT_DIR$/.idea/modules/Rover.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Rover/.idea/modules/Rover-build.iml" filepath="$PROJECT_DIR$/Rover/.idea/modules/Rover-build.iml" />
+    </modules>
+  </component>
+</project>
