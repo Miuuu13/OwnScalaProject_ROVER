@@ -10,5 +10,7 @@ object Main {
     val movRover1: MovingRover = new MovingRover("Runny", 0, 0, 0)
     movRover1.printPosition()
     //println(movRover1.move(1,2,3))
+    val ananasCollect = movRover1.collect("ananas")
+    println(ananasCollect)
   }
 }
