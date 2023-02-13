@@ -8,6 +8,7 @@ object Main {
     statRover1.printPosition()
 
     val movRover1: MovingRover = new MovingRover("Runny", 0, 0, 0)
-    println(movRover1.move(1,2,3))
+    movRover1.printPosition()
+    //println(movRover1.move(1,2,3))
   }
 }
