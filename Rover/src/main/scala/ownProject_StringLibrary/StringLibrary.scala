@@ -1,170 +1,130 @@
 package ownProject_StringLibrary
 
-import scala.collection.{ArrayOps, IterableOnceExtensionMethods, IterableOps, Searching, SeqFactory, StepperShape, StringOps}
-import scala.collection.immutable.WrappedString
-import scala.concurrent.duration
-import scala.jdk.{DurationConverters, FunctionWrappers, FutureConverters, OptionConverters}
-import scala.runtime.{RichBoolean, RichByte, RichChar, RichDouble, RichFloat, RichInt, RichLong, RichShort, Tuple2Zipped, Tuple3Zipped}
-import scala.util.ChainingOps
+import ownProject_StringLibrary.StringLibrary.countElements
+
+import scala.collection.immutable.ArraySeq
+import scala.collection.mutable.ArrayBuffer
 
 object StringLibrary extends App{
 
-  enum DataType {
-    case String, Int
+
+  //TODO VL-Bsp hier erstmal testen, bevor weitergemacht wird.
+  //imperative style:
+  val numbers: ArrayBuffer[Int] = ArrayBuffer(1, 2, 3, 4)
+  val squaredNumbers: ArrayBuffer[Int] = ArrayBuffer()
+  var i = 0
+  while (i < numbers.size) {
+    squaredNumbers.append(numbers(i) * numbers(i))
+    i += 1
+  }
+  println(squaredNumbers)
+
+  //functional style
+  val funcSquaredNumbers = squaredNumbers.map(x => x * x)
+  println(funcSquaredNumbers)
+  //Funktionsliteral ist vom Typ Function1[Int, Int]
+  // (Int, Int) => Int
+  val functionLiteral: Function1[Int, Int] = x => x * x
+
+  //convert numbers from Int to Float
+  val convertedNumbers = numbers.map((n: Int) => n.toFloat)
+  println(convertedNumbers)
+
+  //use .flatten
+  val evenNumbers: ArraySeq[Int] = ArraySeq(2, 4, 6)
+  val oddNumbers: ArraySeq[Int] = ArraySeq(1, 3, 5)
+  val newNumbers: ArraySeq[ArraySeq[Int]] = ArraySeq(evenNumbers, oddNumbers)
+  println(newNumbers)
+  println (newNumbers.flatten)
+
+  //get char seq: flatMap
+  val words: ArraySeq[String] = ArraySeq("Einfuehrung", "in", "die", "Softwareentwicklung")
+  val charsInWords = words.flatMap(w => w.toList)
+  println(charsInWords)
+
+  //only even numbers: filter
+  val nowEvenNumbers = numbers.filter((n: Int) => n % 2 == 0)
+  println(nowEvenNumbers)
+
+  //foldLeft : Reduktion auf ein Element: Alle Elemente aufsummieren
+  val EiSwords: ArraySeq[String] = ArraySeq("Einfuehrung", "in", "die", "Softwareentwicklung")
+  EiSwords.foldLeft(0)((agg: Int, elem: String) => agg + elem.length)
+  //it was recommended to replace .size for strings/arrays with .length
+
+  //.reduce
+  //Größtes Element erhalten
+  val randomNumbers: ArraySeq[Int] = ArraySeq(96, 13, 67, 101, 42)
+  val largestElem = randomNumbers.reduce((l,r) => l max r)
+  //recommended to use .max
+
+  //Summe erhalten
+  val sumRandomNumbers = randomNumbers.reduce((l,r) => l + r)
+  //recommended to use .sum
+
+  //reduce wirft bei leerer Collection Fehler-> reduceOption
+  val OptionLargest = randomNumbers.reduceOption((l,r) => l max r)
+  val sum: Option[Int] = numbers.reduceOption((x: Int, y: Int) => x + y)
+
+  //getOrElse
+  val empty: ArraySeq[Int] = ArraySeq()
+  val numbers2: ArraySeq[Int] = ArraySeq(96, 13, 67, 101, 42)
+
+  val sum1: Option[Int] = empty.reduceOption((x: Int, y: Int) => x + y)
+  println(sum1.getOrElse(0)) //Alternativwert ist Null
+  val sum2: Option[Int] = numbers.reduceOption((x: Int, y: Int) => x + y)
+  println(sum2.getOrElse(0))
+
+  //.zip
+  val firstNames: ArraySeq[String] = ArraySeq("Felix", "Justus")
+  val lastNames: ArraySeq[String] = ArraySeq("Schuhknecht", "Henneberg")
+  val zippedNames = firstNames.zip(lastNames)
+  println(zippedNames)
+
+  //Verkettung von Methoden BSP
+  val wordsToChain: ArraySeq[String] = ArraySeq("Einfuehrung", "in", "die", "Softwareentwicklung")
+  val res = words
+    .map((s: String) => s.toList)
+    .flatten
+    .map((c: Char) => c.toTitleCase)
+
+  //for loop:
+  val v: ArraySeq[String] = ArraySeq("zero", "one", "three", "four")
+  //immer until verwenden, das schließt auch das letzte element mit ein!
+  for (i <- 0 until v.length) {
+    println (v(i))
   }
 
-  def countElements(obj: AnyVal): Any =
-    obj match
-      case String => obj match
-        case ops: ArrayOps[_] =>
-        case assoc: ArrowAssoc[_] =>
-        case bool: Boolean =>
-        case b: Byte =>
-        case ops: ChainingOps[_] =>
-        case c: Char =>
-        case ops: FutureConverters.CompletionStageOps[_] =>
-        case deferrer: Stream.Deferrer[_] =>
-        case deferrer: LazyList.Deferrer[_] =>
-        case d: Double =>
-        case mult: duration.DoubleMult =>
-        case double: duration.DurationDouble =>
-        case int: duration.DurationInt =>
-        case long: duration.DurationLong =>
-        case extractor: PartialFunction.ElementWiseExtractor[_, _] =>
-        case ensuring: Ensuring[_] =>
-        case fl: Float =>
-        case ops: FutureConverters.FutureOps[_] =>
-        case i: Int =>
-        case mult: duration.IntMult =>
-        case methods: IterableOnceExtensionMethods[_] =>
-        case ops: DurationConverters.JavaDurationOps =>
-        case l: Long =>
-        case mult: duration.LongMult =>
-        case either: Either.MergeableEither[_] =>
-        case ops: Tuple3Zipped.Ops[_, _, _] =>
-        case ops: Tuple2Zipped.Ops[_, _] =>
-        case partial: Range.Partial[_, _] =>
-        case function: FunctionWrappers.RichBiConsumerAsFunction2[_, _] =>
-        case function: FunctionWrappers.RichBiFunctionAsFunction2[_, _, _] =>
-        case function: FunctionWrappers.RichBiPredicateAsFunction2[_, _] =>
-        case function: FunctionWrappers.RichBinaryOperatorAsFunction2[_] =>
-        case boolean: RichBoolean =>
-        case function: FunctionWrappers.RichBooleanSupplierAsFunction0 =>
-        case byte: RichByte =>
-        case char: RichChar =>
-        case function: FunctionWrappers.RichConsumerAsFunction1[_] =>
-        case double: RichDouble =>
-        case function: FunctionWrappers.RichDoubleBinaryOperatorAsFunction2 =>
-        case function: FunctionWrappers.RichDoubleConsumerAsFunction1 =>
-        case function: FunctionWrappers.RichDoubleFunctionAsFunction1[_] =>
-        case function: FunctionWrappers.RichDoublePredicateAsFunction1 =>
-        case function: FunctionWrappers.RichDoubleSupplierAsFunction0 =>
-        case function: FunctionWrappers.RichDoubleToIntFunctionAsFunction1 =>
-        case function: FunctionWrappers.RichDoubleToLongFunctionAsFunction1 =>
-        case function: FunctionWrappers.RichDoubleUnaryOperatorAsFunction1 =>
-        case float: RichFloat =>
-        case supplier: FunctionWrappers.RichFunction0AsBooleanSupplier =>
-        case supplier: FunctionWrappers.RichFunction0AsDoubleSupplier =>
-        case supplier: FunctionWrappers.RichFunction0AsIntSupplier =>
-        case supplier: FunctionWrappers.RichFunction0AsLongSupplier =>
-        case supplier: FunctionWrappers.RichFunction0AsSupplier[_] =>
-        case consumer: FunctionWrappers.RichFunction1AsConsumer[_] =>
-        case consumer: FunctionWrappers.RichFunction1AsDoubleConsumer =>
-        case function: FunctionWrappers.RichFunction1AsDoubleFunction[_] =>
-        case predicate: FunctionWrappers.RichFunction1AsDoublePredicate =>
-        case function: FunctionWrappers.RichFunction1AsDoubleToIntFunction =>
-        case function: FunctionWrappers.RichFunction1AsDoubleToLongFunction =>
-        case operator: FunctionWrappers.RichFunction1AsDoubleUnaryOperator =>
-        case function: FunctionWrappers.RichFunction1AsFunction[_, _] =>
-        case consumer: FunctionWrappers.RichFunction1AsIntConsumer =>
-        case function: FunctionWrappers.RichFunction1AsIntFunction[_] =>
-        case predicate: FunctionWrappers.RichFunction1AsIntPredicate =>
-        case function: FunctionWrappers.RichFunction1AsIntToDoubleFunction =>
-        case function: FunctionWrappers.RichFunction1AsIntToLongFunction =>
-        case operator: FunctionWrappers.RichFunction1AsIntUnaryOperator =>
-        case consumer: FunctionWrappers.RichFunction1AsLongConsumer =>
-        case function: FunctionWrappers.RichFunction1AsLongFunction[_] =>
-        case predicate: FunctionWrappers.RichFunction1AsLongPredicate =>
-        case function: FunctionWrappers.RichFunction1AsLongToDoubleFunction =>
-        case function: FunctionWrappers.RichFunction1AsLongToIntFunction =>
-        case operator: FunctionWrappers.RichFunction1AsLongUnaryOperator =>
-        case predicate: FunctionWrappers.RichFunction1AsPredicate[_] =>
-        case function: FunctionWrappers.RichFunction1AsToDoubleFunction[_] =>
-        case function: FunctionWrappers.RichFunction1AsToIntFunction[_] =>
-        case function: FunctionWrappers.RichFunction1AsToLongFunction[_] =>
-        case operator: FunctionWrappers.RichFunction1AsUnaryOperator[_] =>
-        case consumer: FunctionWrappers.RichFunction2AsBiConsumer[_, _] =>
-        case function: FunctionWrappers.RichFunction2AsBiFunction[_, _, _] =>
-        case predicate: FunctionWrappers.RichFunction2AsBiPredicate[_, _] =>
-        case operator: FunctionWrappers.RichFunction2AsBinaryOperator[_] =>
-        case operator: FunctionWrappers.RichFunction2AsDoubleBinaryOperator =>
-        case operator: FunctionWrappers.RichFunction2AsIntBinaryOperator =>
-        case operator: FunctionWrappers.RichFunction2AsLongBinaryOperator =>
-        case consumer: FunctionWrappers.RichFunction2AsObjDoubleConsumer[_] =>
-        case consumer: FunctionWrappers.RichFunction2AsObjIntConsumer[_] =>
-        case consumer: FunctionWrappers.RichFunction2AsObjLongConsumer[_] =>
-        case function: FunctionWrappers.RichFunction2AsToDoubleBiFunction[_, _] =>
-        case function: FunctionWrappers.RichFunction2AsToIntBiFunction[_, _] =>
-        case function: FunctionWrappers.RichFunction2AsToLongBiFunction[_, _] =>
-        case function: FunctionWrappers.RichFunctionAsFunction1[_, _] =>
-        case int: RichInt =>
-        case function: FunctionWrappers.RichIntBinaryOperatorAsFunction2 =>
-        case function: FunctionWrappers.RichIntConsumerAsFunction1 =>
-        case function: FunctionWrappers.RichIntFunctionAsFunction1[_] =>
-        case function: FunctionWrappers.RichIntPredicateAsFunction1 =>
-        case function: FunctionWrappers.RichIntSupplierAsFunction0 =>
-        case function: FunctionWrappers.RichIntToDoubleFunctionAsFunction1 =>
-        case function: FunctionWrappers.RichIntToLongFunctionAsFunction1 =>
-        case function: FunctionWrappers.RichIntUnaryOperatorAsFunction1 =>
-        case long: RichLong =>
-        case function: FunctionWrappers.RichLongBinaryOperatorAsFunction2 =>
-        case function: FunctionWrappers.RichLongConsumerAsFunction1 =>
-        case function: FunctionWrappers.RichLongFunctionAsFunction1[_] =>
-        case function: FunctionWrappers.RichLongPredicateAsFunction1 =>
-        case function: FunctionWrappers.RichLongSupplierAsFunction0 =>
-        case function: FunctionWrappers.RichLongToDoubleFunctionAsFunction1 =>
-        case function: FunctionWrappers.RichLongToIntFunctionAsFunction1 =>
-        case function: FunctionWrappers.RichLongUnaryOperatorAsFunction1 =>
-        case function: FunctionWrappers.RichObjDoubleConsumerAsFunction2[_] =>
-        case function: FunctionWrappers.RichObjIntConsumerAsFunction2[_] =>
-        case function: FunctionWrappers.RichObjLongConsumerAsFunction2[_] =>
-        case option: OptionConverters.RichOption[_] =>
-        case optional: OptionConverters.RichOptional[_] =>
-        case double: OptionConverters.RichOptionalDouble =>
-        case int: OptionConverters.RichOptionalInt =>
-        case long: OptionConverters.RichOptionalLong =>
-        case function: FunctionWrappers.RichPredicateAsFunction1[_] =>
-        case short: RichShort =>
-        case function: FunctionWrappers.RichSupplierAsFunction0[_] =>
-        case function: FunctionWrappers.RichToDoubleBiFunctionAsFunction2[_, _] =>
-        case function: FunctionWrappers.RichToDoubleFunctionAsFunction1[_] =>
-        case function: FunctionWrappers.RichToIntBiFunctionAsFunction2[_, _] =>
-        case function: FunctionWrappers.RichToIntFunctionAsFunction1[_] =>
-        case function: FunctionWrappers.RichToLongBiFunctionAsFunction2[_, _] =>
-        case function: FunctionWrappers.RichToLongFunctionAsFunction1[_] =>
-        case function: FunctionWrappers.RichUnaryOperatorAsFunction1[_] =>
-        case ops: DurationConverters.ScalaDurationOps =>
-        case impl: Searching.SearchImpl[_, _] =>
-        case shape: StepperShape.Shape =>
-        case sh: Short =>
-        case ops: IterableOps.SizeCompareOps =>
-        case format: StringFormat[_] =>
-        case ops: StringOps =>
-        case zipped: Tuple2Zipped[_, _, _, _] =>
-        case zipped: Tuple3Zipped[_, _, _, _, _, _] =>
-        case wrapper: SeqFactory.UnapplySeqWrapper[_] =>
-        case wrapper: Array.UnapplySeqWrapper[_] =>
-        case unit: Unit =>
-        case ops: Function1.UnliftOps[_, _] =>
-        case op: WrappedString.UnwrapOp =>
-        case of: ValueOf[_] =>
-        case any2stringadd: any2stringadd[_] =>
-        case _ =>
+  //replace 0 until v.length with v.indices recommended!!!
+  for (i <- v.indices) {
+    println(v(i))
+  }
 
+  //for mit Generator
+  val v2: ArraySeq[String]
+  = ArraySeq("zero", "one", "three", "four")
+  for (entry <- v2) { //für alle entries in v2
+    println(entry)
+  }
+
+  //empfohlen: .foreach
+  val v3 = List(1,2,3)
+  v3.foreach(println(_))
+
+  //Mittels yield kann eine neue Collection erzeugt werden
+  val v4: ArraySeq[Int] = ArraySeq(1, 2, 3, 4)
+  println(v4)
+  val squaredv4 = for ((x: Int) <- v4) yield x * x
+  println(squaredv4)
+
+
+  def countElements(obj: Any): Any =
+    obj match
+      case s:String => s.count
       case Int => s"$this can't be counted."
       case _ => "Type not supported."
 
-  println(countElements(2))
+  //println(countElements(2))
+  //println(countElements("abc"))
 
 
 
