@@ -2,9 +2,9 @@ package ownProject_Rover
 
 abstract class Rover(val name: String, val x: Int, val y: Int, z: Int) {
   /**Prints the name of a rover*/
-  def printName(): Unit = println(s"My name is $name. I am a Rover.")
+  def printName(): Unit = s"My name is $name. I am a Rover."
   /**Prints the position of a rover*/
-  def printPosition(): Unit = println(s"My starting position: $x, $y, $z")
+  def printPosition(): Unit = s"My starting position: $x, $y, $z"
   def canMove = false
 }
 
