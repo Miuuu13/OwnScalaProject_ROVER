@@ -10,7 +10,7 @@ abstract class Rover(val name: String, val x: Int, val y: Int, z: Int) {
 
 class StationaryRover(name: String, x: Int, y: Int, z: Int)
   extends Rover(name: String, x: Int, y: Int, z: Int) with canMeasureTemperature {
-  override def printName(): Unit = super.printName() + "I am a stationary rover."
+  override def printName(): Unit = s"My name is $name. I am a Rover." + "I am a stationary rover."
   override def printPosition(): Unit = println(s"My stationary position: $x, $y, $z - I can't move.")
 
   val tempCelcius: Int = 0
@@ -20,7 +20,7 @@ class StationaryRover(name: String, x: Int, y: Int, z: Int)
 
 class MovingRover(name: String, x: Int, y: Int, z: Int)
   extends Rover(name: String, x: Int, y: Int, z: Int) with isCollecting{
-  override def printName(): Unit = super.printName() + "I am a moving rover."
+  override def printName(): Unit = s"My name is $name. I am a Rover." + "I am a moving rover."
   override def printPosition(): Unit = println(s"My position: $x, $y, $z - But: I can move.")
   override def canMove = true
 
