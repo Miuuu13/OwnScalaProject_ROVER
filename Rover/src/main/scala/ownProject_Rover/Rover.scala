@@ -47,28 +47,28 @@ class Rover(val name: String,
   private val logBuffer: ArrayBuffer[String] = new ArrayBuffer()
 
   /** Moves the rover one step towards east */
-  def moveEast() = {
+  def moveEast(): Unit = {
     payEnergy(MoveEnergy)
     x += 1
     logged("E")
   }
 
   /** Moves the rover one step towards west */
-  def moveWest() = {
+  def moveWest(): Unit = {
     payEnergy(MoveEnergy)
     x -= 1
     logged("W")
   }
 
   /** Moves the rover one step towards north */
-  def moveNorth() = {
+  def moveNorth(): Unit = {
     payEnergy(MoveEnergy)
     y += 1
     logged("N")
   }
 
   /** Moves the rover one step towards south */
-  def moveSouth() = {
+  def moveSouth(): Unit = {
     payEnergy(MoveEnergy)
     y -= 1
     logged("S")
@@ -91,7 +91,7 @@ class Rover(val name: String,
    */
   def dropItem(): Option[Item] = {
     payEnergy(DropEnergy)
-    if (!items.isEmpty) {
+    if (items.nonEmpty) { // same as !items.isEmpty
       val item = items.remove(0)
       logged("Dropped " + item)
       weight -= item.weight
@@ -132,7 +132,7 @@ class Rover(val name: String,
   }
 
   /** Returns the current position of the rover as a tuple */
-  def position = (x, y)
+  def position: (Int, Int) = (x, y)
 }
 
 /** An abstract class representing an item
