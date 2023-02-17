@@ -1,4 +1,4 @@
-package ownProject_Rover
+package ownProject_MyRover
 
 object Main {
   def main(args: Array[String]): Unit = {
@@ -12,5 +12,23 @@ object Main {
     //println(movRover1.move(1,2,3))
     val ananasCollect = movRover1.collect("ananas")
     println(ananasCollect)
+
+
+    //enum example from ZT
+    enum Slot {
+      case VL, Break, Tutorial
+    }
+    import Slot.*
+
+    val monday: Seq[Slot] = Seq[Slot](VL, Break, Tutorial, VL)
+
+    val getInfo: String = monday.head match
+      case VL => s"The lecture is in room 123."
+      case Break => "relax"
+      case Tutorial => "Check email for info about the room"
+
+    println(monday)
+    println(getInfo) //monday.head ===VL >>The lecture is in room 123.
   }
+
 }
